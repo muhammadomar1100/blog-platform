@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications | Modern Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="notifications">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">Modern Blog</div>
+      <div class="topbar-actions">
+        <span id="userBadge" class="badge hidden"></span>
+        <button id="logoutBtn" class="btn btn-ghost hidden">Logout</button>
+        <a id="feedLink" href="index.html" class="btn btn-ghost hidden">Feed</a>
+        <a id="profileLink" href="profile.html" class="btn btn-ghost hidden">Profile</a>
+        <a id="loginLink" href="login.html" class="btn btn-primary">Login</a>
+        <a id="signupLink" href="signup.html" class="btn btn-secondary">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main">
+    <div class="notif-head">
+      <h1>Notifications</h1>
+      <button id="refreshNotifBtn" class="btn btn-ghost">Refresh</button>
+    </div>
+
+    <p id="globalMessage" class="message hidden"></p>
+    <section id="notificationsList" class="notif-list hidden"></section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
+

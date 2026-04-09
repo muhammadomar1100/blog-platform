@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile | Modern Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="profile">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">Modern Blog</div>
+      <div class="topbar-actions">
+        <span id="userBadge" class="badge hidden"></span>
+        <button id="logoutBtn" class="btn btn-ghost hidden">Logout</button>
+        <a id="feedLink" href="index.html" class="btn btn-ghost hidden">Feed</a>
+        <a id="notificationsLink" href="notifications.html" class="btn btn-ghost hidden">Notifications</a>
+        <a id="loginLink" href="login.html" class="btn btn-primary">Login</a>
+        <a id="signupLink" href="signup.html" class="btn btn-secondary">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main">
+    <p id="globalMessage" class="message hidden"></p>
+
+    <section id="profileCard" class="card profile-card hidden">
+      <div class="profile-top">
+        <div class="avatar-wrap">
+          <img id="avatarImg" class="avatar" alt="Avatar" />
+        </div>
+        <div class="profile-heading">
+          <h1 id="profileUsername"></h1>
+          <p class="profile-sub" id="profileEmail"></p>
+          <div class="counts">
+            <div class="count">
+              <div class="count-num" id="followersCount">0</div>
+              <div class="count-label">Followers</div>
+            </div>
+            <div class="count">
+              <div class="count-num" id="followingCount">0</div>
+              <div class="count-label">Following</div>
+            </div>
+          </div>
+          <div id="followActions" class="follow-actions hidden">
+            <button id="followBtn" class="btn btn-primary">Follow</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-body">
+        <div class="field">
+          <div class="field-label">Bio</div>
+          <p id="bioText" class="bio"></p>
+        </div>
+        <div class="field">
+          <div class="field-label">Website</div>
+          <p id="websiteText" class="website"></p>
+        </div>
+
+        <section id="editSection" class="edit-section hidden">
+          <h2>Edit Your Profile</h2>
+          <form id="editProfileForm" class="form">
+            <label for="bioInput">Bio</label>
+            <textarea id="bioInput" rows="4" placeholder="Write a short bio..."></textarea>
+
+            <label for="avatarInput">Avatar URL</label>
+            <input id="avatarInput" type="url" placeholder="https://example.com/avatar.png" />
+
+            <label for="websiteInput">Website</label>
+            <input id="websiteInput" type="url" placeholder="https://example.com" />
+
+            <label for="avatarFileInput">Upload Avatar</label>
+            <input id="avatarFileInput" type="file" accept="image/*" />
+            <small class="muted">Supported image files only (JPG, PNG, WEBP, etc.).</small>
+
+            <div class="actions right">
+              <button type="button" id="uploadAvatarBtn" class="btn btn-ghost">Upload Avatar</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary full">Save Changes</button>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
+

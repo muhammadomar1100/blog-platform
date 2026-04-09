@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="index">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">Modern Blog</div>
+      <div class="topbar-actions">
+        <span id="userBadge" class="badge hidden"></span>
+        <button id="logoutBtn" class="btn btn-ghost hidden">Logout</button>
+        <a id="profileLink" href="profile.html" class="btn btn-ghost hidden">Profile</a>
+        <a id="notificationsLink" href="notifications.html" class="btn btn-ghost hidden">Notifications</a>
+        <a id="loginLink" href="login.html" class="btn btn-primary">Login</a>
+        <a id="signupLink" href="signup.html" class="btn btn-secondary">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main">
+    <section id="createPostCard" class="card hidden">
+      <h2>Create Post</h2>
+      <form id="createPostForm" class="form">
+        <textarea id="postContent" rows="4" placeholder="Write your post..." required></textarea>
+        <div class="actions">
+          <small class="muted">Share your thoughts with the community</small>
+          <button class="btn btn-primary" type="submit">Publish</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="feed-head">
+      <div class="feed-left">
+        <h1>Latest Posts</h1>
+        <form id="searchForm" class="search-form" autocomplete="off">
+          <input id="searchInput" type="search" placeholder="Search posts by keyword..." />
+          <button class="btn btn-ghost btn-sm" type="submit">Search</button>
+        </form>
+      </div>
+      <button id="refreshBtn" class="btn btn-ghost">Refresh</button>
+    </section>
+
+    <p id="globalMessage" class="message hidden"></p>
+    <section id="postsContainer" class="posts"></section>
+  </main>
+
+  <template id="postTemplate">
+    <article class="card post">
+      <div class="post-top">
+        <div class="owner-row">
+          <div class="post-avatar-wrap">
+            <img class="post-avatar" alt="User avatar" />
+          </div>
+          <div>
+            <p class="owner"></p>
+            <p class="time"></p>
+          </div>
+        </div>
+        <div class="owner-actions hidden">
+          <button class="btn btn-ghost btn-sm edit-btn">Edit</button>
+          <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+        </div>
+      </div>
+
+      <p class="content"></p>
+
+      <form class="edit-form hidden">
+        <textarea class="edit-input" rows="4" required></textarea>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost btn-sm cancel-edit-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save</button>
+        </div>
+      </form>
+
+      <div class="post-meta">
+        <button class="btn btn-like btn-sm like-btn">Like</button>
+        <span class="likes"></span>
+      </div>
+
+      <section class="comments">
+        <h3>Comments</h3>
+        <form class="comment-form hidden">
+          <textarea class="comment-input" rows="2" placeholder="Add a comment..." required></textarea>
+          <div class="actions right">
+            <button class="btn btn-secondary btn-sm" type="submit">Comment</button>
+          </div>
+        </form>
+        <p class="muted login-note hidden">Login to add comments.</p>
+        <ul class="comment-list"></ul>
+      </section>
+    </article>
+  </template>
+
+  <script src="main.js"></script>
+</body>
+</html>
