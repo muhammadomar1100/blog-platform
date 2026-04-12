@@ -120,7 +120,8 @@ app.get('/verify-email', async (req, res) => {
         await user.save();
 
         // Redirect to login page after verification
-        res.redirect('http://localhost:5501/frontend/login.html?verified=true');
+        res.redirect('https://postly01.netlify.app/login.html?verified=true');
+
 
     } catch (error) {
         res.status(500).json({ message: error.message });

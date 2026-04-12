@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://postly-hx5c.onrender.com";
 const TOKEN_KEY = "blogToken";
 
 const page = document.body?.dataset?.page;
