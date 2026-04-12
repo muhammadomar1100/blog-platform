@@ -15,7 +15,10 @@ const sendVerificationEmail = require('./utils/sendEmail');
 // This allows our server to understand JSON (VERY IMPORTANT for later) // Create express app
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'https://postly01.netlify.app',
+    credentials: true
+}));
 // Connect to Database
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
@@ -99,6 +102,29 @@ app.post('/signup', async (req, res) => {
         res.status(201).json({ 
             message: 'Account created. Please check your email to verify your account.' 
         });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.get('/verify-email', async (req, res) => {
+    try {
+        const { token } = req.query;
+
+        const user = await User.findOne({ verificationToken: token });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired verification link' });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = null;
+        await user.save();
+
+        // Redirect to login page after verification
+        res.redirect('https://postly01.netlify.app/login.html?verified=true');
+
 
     } catch (error) {
         res.status(500).json({ message: error.message });
