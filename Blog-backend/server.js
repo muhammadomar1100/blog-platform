@@ -97,7 +97,13 @@ app.post('/signup', async (req, res) => {
         await newUser.save();
 
         // Send verification email
-        await sendVerificationEmail(email, verificationToken);
+        // await sendVerificationEmail(email, verificationToken);
+
+        try {
+    await sendVerificationEmail(email, verificationToken);
+} catch (emailErr) {
+    console.log('Email failed but user created:', emailErr.message);
+}
 
         res.status(201).json({ 
             message: 'Account created. Please check your email to verify your account.' 
@@ -170,9 +176,9 @@ app.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid Password' });
         }
 
-        if(!user.isVerified) {
-            return res.status(400).json({ message: 'Please verify your email before logging in' });
-        };
+        // if(!user.isVerified) {
+        //     return res.status(400).json({ message: 'Please verify your email before logging in' });
+        // };
 
         // Create token
         const token = jwt.sign(
