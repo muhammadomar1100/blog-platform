@@ -9,6 +9,8 @@ const cors = require('cors')
 const multer = require('multer');
 const path = require('path');
 require('dotenv').config();
+const crypto = require('crypto');
+const sendVerificationEmail = require('./utils/sendEmail');
 
 // This allows our server to understand JSON (VERY IMPORTANT for later) // Create express app
 const app = express();
@@ -67,26 +69,58 @@ app.post('/signup', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        // Check if user already exists
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash password (VERY IMPORTANT)
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create new user
+        // Generate verification token
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+
         const newUser = new User({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            isVerified: false,
+            verificationToken
         });
 
-        // Save to database
         await newUser.save();
 
-        res.status(201).json({ message: 'User created successfully' });
+        // Send verification email
+        await sendVerificationEmail(email, verificationToken);
+
+        res.status(201).json({ 
+            message: 'Account created. Please check your email to verify your account.' 
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.get('/verify-email', async (req, res) => {
+    try {
+        const { token } = req.query;
+
+        const user = await User.findOne({ verificationToken: token });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired verification link' });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = null;
+        await user.save();
+
+        // Redirect to login page after verification
+        res.redirect('http://localhost:5501/frontend/login.html?verified=true');
 
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -109,10 +143,14 @@ app.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid Password' });
         }
 
+        if(!user.isVerified) {
+            return res.status(400).json({ message: 'Please verify your email before logging in' });
+        };
+
         // Create token
         const token = jwt.sign(
             { userId: user._id, username: user.username }, // Data we store also by doing user.username we can easily show username in frontend without extra DB call
-            "secretkey123", // we will secure later
+            process.env.JWT_SECRET, // we will secure later
             { expiresIn: '1d'} // token expires in 1 hour
         );
         res.json({
@@ -163,15 +201,17 @@ app.get('/posts/search', auth, async (req, res) => {
 app.get('/posts', async (req, res) => {
     try {
         const posts = await Post.find()
-            .populate('user', 'username email')
+            .populate('user', 'username email avatarUrl')
             .populate('comments.user', 'username email')
             .sort({ createdAt: -1 });
 
-        res.json(posts);
+        const validPosts = posts.filter(post => post.user !== null);
+        res.json(validPosts);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 // LIKE / UNLIKE a post
 app.put('/posts/:id/like', auth, async (req, res) => {
@@ -295,7 +335,7 @@ app.delete('/posts/:id', auth, async (req, res) => {
             return res.status(403).json({ message: 'You are not allowed to delete this post' });
         }
 
-        await post.findByIdAndDelete(req.params.id);
+        await Post.findByIdAndDelete(req.params.id);
         res.json({ message: 'Post deleted' });
     } catch (error) {
         res.status(500).json({ message: error.message });

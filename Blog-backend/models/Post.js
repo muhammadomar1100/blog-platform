@@ -10,11 +10,7 @@ const postSchema = new mongoose.Schema({
         ref: 'User', // links post to its creator
         required: true
     },
-    title: {
-        type: String,
-        required: true,
-        maxlength: 150
-    },
+
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,

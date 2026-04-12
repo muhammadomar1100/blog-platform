@@ -11,6 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initLogin() {
+  // Show verified message if coming from email verification
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('verified') === 'true') {
+    showMessage(document.getElementById('authMessage'), 
+    'Email verified successfully. You can now log in.');
+  }
+
   const form = document.getElementById("loginForm");
   const msg = document.getElementById("authMessage");
   form?.addEventListener("submit", async (e) => {
@@ -327,6 +334,7 @@ function renderPosts(posts) {
   });
 }
 
+
 function renderComments(list, comments) {
   list.innerHTML = "";
   if (!comments.length) {
@@ -613,9 +621,7 @@ async function uploadAvatar(userId, file) {
 
   const formData = new FormData();
   // Common multer field names; backend can read whichever it is configured for.
-  formData.append("avatar", file);
-  formData.append("image", file);
-  formData.append("file", file);
+ formData.append("avatar", file);
 
   // API call: POST /users/:id/avatar with multipart/form-data + JWT.
   const response = await fetch(`${API_BASE_URL}/users/${encodeURIComponent(userId)}/avatar`, {

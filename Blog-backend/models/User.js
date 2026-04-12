@@ -5,8 +5,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true, // No duplicates
-        minlength: 3,
-        maxlength: 30
     },
     email: {
         type: String,
@@ -28,6 +26,14 @@ const userSchema = new mongoose.Schema({
     website: {
         type: String,
         default: ''
+    },
+    isVerified: {
+        type: Boolean,
+        default: false  
+    },
+    verificationToken: {
+        type: String,
+        default: null
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
