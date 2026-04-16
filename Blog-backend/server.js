@@ -10,7 +10,7 @@ const multer = require('multer');
 const path = require('path');
 require('dotenv').config();
 const crypto = require('crypto');
-const sendVerificationEmail = require('./utils/sendEmail');
+// const sendVerificationEmail = require('./utils/sendEmail');
 
 // This allows our server to understand JSON (VERY IMPORTANT for later) // Create express app
 const app = express();
